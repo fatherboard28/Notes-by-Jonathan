@@ -1,16 +1,42 @@
-var app = angular.module('flapperNews', []);
+var app = angular.module('noteApp', ['ui.bootstrap','ngSanitize','angular.filter']);
 
 app.controller('MainCtrl', [
 '$scope',
     function($scope){
-        $scope.test = 'Hello World!';
-        $scope.posts = [
-            {title: 'post 1', upvotes: 5},
-            {title: 'post 2', upvotes: 3},
-            {title: 'post 3', upvotes: 8},
-            {title: 'post 4', upvotes: 1},
-            {title: 'post 5', upvotes: 0}
+        $scope.notes = [
+            {title: 'Note Title 1', content: 'test content'},
+            {title: 'Note title 2', content: 'hello world'}
         ];
+        $scope.firstItemData = $scope.notes[0];
+        $scope.clickedFirstTime = false;
+
+        $scope.open = function (item) {
+            $scope.notes.filter(a=> a ===item).forEach(a=>{
+                debugger;
+                a.isOpen = (a.isOpen === undefined && a ===
+                    $scope.firstItemData ? false:!a.isOpen);
+            });
+            $scope.clickedFirstTime = true;
+        }
+
+        $scope.close = function (item) {
+            $scope.notes.filter(a=> a ===item).forEach(a=>{
+                a.isOpen = false;
+            });
+        }
+
+        $scope.addNote = function(){
+            if (!$scope.title || $scope.title === '') {return; }
+            //var today = new Date();
+
+            $scope.notes.push({
+                title: $scope.title,
+               // date: (today.getMonth()+1)+'/'+today.getDate()+'/'+today.getFullYear(),
+                content: $scope.content
+            });
+            $scope.title = '';
+        };
+
 }]);
 
 
