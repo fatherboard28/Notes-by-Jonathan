@@ -1,8 +1,18 @@
 var app = angular.module('noteApp', ['ui.bootstrap','ngSanitize','angular.filter']);
 
+
+app.factory('notes', [function(){
+    var o = {
+        notes: []
+    };
+    return o;
+
+}])
+
 app.controller('MainCtrl', [
 '$scope',
-    function($scope){
+'notes',
+    function($scope, notes){
         $scope.notes = [
             {title: 'Note Title 1', content: 'test content'},
             {title: 'Note title 2', content: 'hello world'}
@@ -35,6 +45,7 @@ app.controller('MainCtrl', [
                 content: $scope.content
             });
             $scope.title = '';
+            $scope.content = '';
         };
 
 }]);
