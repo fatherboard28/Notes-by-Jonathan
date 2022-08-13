@@ -1,5 +1,23 @@
-var app = angular.module('noteApp', ['ui.bootstrap','ngSanitize','angular.filter']);
+var app = angular.module('noteApp', ['ui.bootstrap','ngSanitize','angular.filter','ui.router']);
 
+app.config([
+    '$stateProvider',
+    '$urlRouterProvider',
+    function($stateProvider, $urlRouterProvider){
+
+        $stateProvider.state('home', {
+            url: '/home',
+            templateUrl: '/home.html',
+            controller: 'MainCrtl'
+        });
+        $stateProvider.state('notes', {
+            url: '/notes/{id}',
+            templateUrl: '/notes.html',
+            controller: 'NotesCtrl'
+        });
+
+        $urlRouterProvider.otherwise('home');
+    }]);
 
 app.factory('notes', [function(){
     var o = {
@@ -13,10 +31,11 @@ app.controller('MainCtrl', [
 '$scope',
 'notes',
     function($scope, notes){
-        $scope.notes = [
+        $scope.notes = notes.notes;
+        /* [
             {title: 'Note Title 1', content: 'test content'},
             {title: 'Note title 2', content: 'hello world'}
-        ];
+        ];*/
         $scope.firstItemData = $scope.notes[0];
         $scope.clickedFirstTime = false;
 
@@ -48,6 +67,14 @@ app.controller('MainCtrl', [
             $scope.content = '';
         };
 
+}]);
+
+app.controller('NotesCtrl', [
+    '$scope',
+    '$stateParams',
+    'notes',
+    function($scope, $stateParams, notes){
+        
 }]);
 
 
